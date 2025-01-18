@@ -1,0 +1,38 @@
+#versão da api criada
+apiVersion: apps/v1
+kind: Deployment
+
+# metadados do cluster
+metadata:
+  name: conversao-distancia
+
+# template do POD
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: conversao-distancia
+  template:
+    metadata:
+      labels:
+        app: conversao-distancia
+    spec:
+      containers:
+      - name: conversao-distancia
+        image: programadorpython03/conversao-distancia:v2
+        ports:
+          - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversao-distancia
+spec:
+  selector:
+    app: conversao-distancia
+  ports:
+  - port: 80
+    targetPort: 5000
+    nodePort: 30000
+  type: NodePort
+
